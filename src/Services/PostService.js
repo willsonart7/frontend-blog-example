@@ -1,7 +1,8 @@
 export class PostService {
 
     static async getPosts() {
-        const res = await fetch("http://localhost:3001/api/post")
+        console.log(import.meta.env)
+        const res = await fetch(import.meta.env.VITE_API_URL + '/api/post')
         const json = await res.json()
 
         if (json.status == 201) {
@@ -25,7 +26,7 @@ export class PostService {
 
             const postId = newPost.id
 
-            const res = await fetch('http://localhost:3001/api/post/' + postId, requestOptions)
+            const res = await fetch(import.meta.env.VITE_API_URL + '/api/post/' + postId, requestOptions)
             const json = await res.json()
 
             if (json.status == 201) {
@@ -45,7 +46,7 @@ export class PostService {
                 headers: { 'Content-Type': 'application/json' },
             };
 
-            const res = await fetch('http://localhost:3001/api/post/' + postId, requestOptions)
+            const res = await fetch(import.meta.env.VITE_API_URL + '/api/post/' + postId, requestOptions)
             const json = await res.json()
 
             if (json.status == 201) {
