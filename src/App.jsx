@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import SetPost from './Actions/SetPost'
+import filterPost from './Actions/filterPost'
+import restorePosts from './Actions/restorePosts'
+import SetPosts from './Actions/SetPosts'
 import './App.css'
 import Form from './Components/Posts/Form'
 import PostList from './Components/Posts/List'
@@ -9,27 +11,27 @@ import { PostService } from './Services/PostService'
 
 function App() {
 
+  // const initialPosts = useSelector(state => (state.initialPosts))
   const posts = useSelector(state => (state.posts))
   const dispatch = useDispatch()
 
   const [isLoading, setIsLoading] = useState(true)
-  const [postFiltered, setPostFiltered] = useState([])
+  // const [postFiltered, setPostFiltered] = useState([])
 
   const getPosts = async () => {
     const data = await PostService.getPosts()
-    dispatch(SetPost(data))
+    dispatch(SetPosts(data))
     setIsLoading(false)
   }
 
   const onFilterPosts = (postName) => {
     setIsLoading(true)
     if (!postName) {
-      setPostFiltered(posts)
+      dispatch(restorePosts())
       setIsLoading(false)
       return
     }
-    const newPostsFiltered = posts.filter(post => (post.name == postName))
-    setPostFiltered(newPostsFiltered)
+    dispatch(filterPost(postName))
     setIsLoading(false)
   }
 
@@ -50,10 +52,6 @@ function App() {
   }, [])
 
 
-  useEffect(() => {
-    setPostFiltered(posts)
-  }, [posts])
-
   return (
     <div className='flex min-h-screen flex-col items-center justify-center py-2'>
       <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center">
@@ -73,7 +71,7 @@ function App() {
                       <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
                     </div>
                     :
-                    <PostList onDeletePost={onDeletePost} posts={postFiltered} />
+                    <PostList onDeletePost={onDeletePost} posts={posts} />
                 }
                 <Form onCreatePost={onCreatePost} />
               </div>
