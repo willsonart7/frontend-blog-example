@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from "uuid"
 export class PostService {
 
     static async getPosts() {
@@ -12,16 +11,19 @@ export class PostService {
         return []
     }
 
-    static async createPost(data) {
+    static async createPost(newPost) {
 
         try {
             const requestOptions = {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
+                body: JSON.stringify({
+                    name: newPost.name,
+                    description: newPost.description
+                })
             };
 
-            const postId = uuidv4()
+            const postId = newPost.id
 
             const res = await fetch('http://localhost:3001/api/post/' + postId, requestOptions)
             const json = await res.json()

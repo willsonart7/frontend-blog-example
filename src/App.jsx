@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { v4 as uuidv4 } from "uuid"
+import AddPost from './Actions/AddPost'
+import DeletePost from './Actions/DeletePost'
 import filterPost from './Actions/filterPost'
 import restorePosts from './Actions/restorePosts'
 import SetPosts from './Actions/SetPosts'
@@ -11,12 +14,10 @@ import { PostService } from './Services/PostService'
 
 function App() {
 
-  // const initialPosts = useSelector(state => (state.initialPosts))
   const posts = useSelector(state => (state.posts))
   const dispatch = useDispatch()
 
   const [isLoading, setIsLoading] = useState(true)
-  // const [postFiltered, setPostFiltered] = useState([])
 
   const getPosts = async () => {
     const data = await PostService.getPosts()
@@ -37,14 +38,21 @@ function App() {
 
   const onCreatePost = async (body) => {
     setIsLoading(true)
-    await PostService.createPost(body)
-    getPosts()
+    const newPost = {
+      id: uuidv4(),
+      name: body.name, 
+      description: body.description
+    }
+    await PostService.createPost(newPost)
+    dispatch(AddPost(newPost))
+    setIsLoading(false)
   }
 
   const onDeletePost = async (postId) => {
     setIsLoading(true)
     await PostService.deletePost(postId)
-    getPosts()
+    dispatch(DeletePost(postId))
+    setIsLoading(false)
   }
 
   useEffect(() => {
