@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import SetPost from './Actions/SetPost'
 import './App.css'
 import Form from './Components/Posts/Form'
 import PostList from './Components/Posts/List'
@@ -7,13 +9,15 @@ import { PostService } from './Services/PostService'
 
 function App() {
 
+  const posts = useSelector(state => (state.posts))
+  const dispatch = useDispatch()
+
   const [isLoading, setIsLoading] = useState(true)
-  const [posts, setPosts] = useState([])
   const [postFiltered, setPostFiltered] = useState([])
 
   const getPosts = async () => {
     const data = await PostService.getPosts()
-    setPosts(data)
+    dispatch(SetPost(data))
     setIsLoading(false)
   }
 
