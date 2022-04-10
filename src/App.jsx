@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import './App.css'
+import Form from './Components/Posts/Form'
 import PostList from './Components/Posts/List'
 import Search from './Components/Posts/Search'
 import { PostService } from './Services/PostService'
@@ -26,6 +27,12 @@ function App() {
     const newPostsFiltered = posts.filter(post => (post.name == postName))
     setPostFiltered(newPostsFiltered)
     setIsLoading(false)
+  }
+
+  const onCreatePost = async (body) => {
+    setIsLoading(true)
+    await PostService.createPost(body)
+    getPosts()
   }
 
   useEffect(() => {
@@ -58,7 +65,7 @@ function App() {
                     :
                     <PostList posts={postFiltered} />
                 }
-                <div>input</div>
+                <Form onCreatePost={onCreatePost} />
               </div>
             </div>
           </div>
