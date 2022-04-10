@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import './App.css'
-import PostList from './Components/Posts/List/Index'
-import Search from './Components/Posts/Search/Index'
+import PostList from './Components/Posts/List'
+import Search from './Components/Posts/Search'
 import { PostService } from './Services/PostService'
 
 function App() {
