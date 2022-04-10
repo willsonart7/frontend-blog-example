@@ -23,7 +23,7 @@ export class PostService {
 
             const postId = uuidv4()
 
-            const res = await fetch('http://localhost:3001/api/post/'+postId, requestOptions)
+            const res = await fetch('http://localhost:3001/api/post/' + postId, requestOptions)
             const json = await res.json()
 
             if (json.status == 201) {
@@ -36,6 +36,25 @@ export class PostService {
 
     }
 
-    
+    static async deletePost(postId) {
+        try {
+            const requestOptions = {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+            };
+
+            const res = await fetch('http://localhost:3001/api/post/' + postId, requestOptions)
+            const json = await res.json()
+
+            if (json.status == 201) {
+                return true
+            }
+
+        } catch (error) {
+            alert("Ha ocurrido un error en la creacion del Post, por favor intentolo mas tarde")
+        }
+    }
+
+
 
 }

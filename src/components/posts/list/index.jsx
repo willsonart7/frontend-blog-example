@@ -1,12 +1,9 @@
 
-const PostList = ({ posts }) => {
+const PostList = ({ posts, onDeletePost }) => {
     return (
         <table className="min-w-full">
             <thead className="bg-white border-b">
                 <tr>
-                    <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
-                        #
-                    </th>
                     <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
                         Nombre
                     </th>
@@ -22,9 +19,6 @@ const PostList = ({ posts }) => {
                 {
                     posts?.map((post, index)=> (
                         <tr key={post.id} className="bg-gray-100 border-b">
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                Post {index + 1}
-                            </td>
                             <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                 { post.name }
                             </td>
@@ -32,7 +26,9 @@ const PostList = ({ posts }) => {
                                 {post.description}
                             </td>
                             <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                <button>
+                                <button onClick={() => {
+                                    onDeletePost(post.id)
+                                }}>
                                     Eliminar
                                 </button>
                             </td>

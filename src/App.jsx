@@ -35,6 +35,12 @@ function App() {
     getPosts()
   }
 
+  const onDeletePost = async (postId) => {
+    setIsLoading(true)
+    await PostService.deletePost(postId)
+    getPosts()
+  }
+
   useEffect(() => {
     getPosts()
   }, [])
@@ -63,7 +69,7 @@ function App() {
                       <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
                     </div>
                     :
-                    <PostList posts={postFiltered} />
+                    <PostList onDeletePost={onDeletePost} posts={postFiltered} />
                 }
                 <Form onCreatePost={onCreatePost} />
               </div>
